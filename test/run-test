@@ -1,0 +1,28 @@
+#!/bin/bash
+source test/env-test
+docker run -d -p 8080:80 --name http-hello-world cpro/http-hello-world
+
+trap 'docker rm -f http-hello-world' EXIT 
+
+# Fail
+export WERCKER_STEP_WAIT_TCP_PORT=80
+export WERCKER_STEP_WAIT_TCP_TIMEOUT=1
+./run.sh
+if [[ "$?" == "1" ]]; then
+    echo "Fail OK"
+else
+    echo "Ops... we didn't fail"
+    exit 1
+fi
+
+# Works
+export WERCKER_STEP_WAIT_TCP_PORT=8080
+export WERCKER_STEP_WAIT_TCP_TIMEOUT=0
+./run.sh
+if [[ "$?" == "0" ]]; then
+    echo "Nice!"
+else
+    echo "Ops... we didn't have success"
+    exit 1
+fi
+

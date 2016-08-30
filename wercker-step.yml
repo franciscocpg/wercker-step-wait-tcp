@@ -1,0 +1,17 @@
+name: step-wait-tcp
+version: 0.0.1
+description: Waits for a tcp connection to be ready
+keywords:
+  - integration tests
+  - wait
+  - tcp
+properties:
+  host:
+    type: string
+    required: false
+  port:
+    type: string
+    required: false
+  timeout:
+    type: string
+    required: false
